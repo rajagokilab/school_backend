@@ -1,0 +1,51 @@
+{% extends 'school/base.html' %}
+
+{% block content %}
+<h2>Parent Dashboard</h2>
+
+{% if student %}
+<h4>Student: {{ student.user.first_name }} {{ student.user.last_name }}</h4>
+
+<h5>Attendance</h5>
+{% if attendance %}
+<table class="table table-bordered">
+    <tr>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+    {% for att in attendance %}
+    <tr>
+        <td>{{ att.date }}</td>
+        <td>{{ att.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No attendance records.</p>
+{% endif %}
+
+<h5>Marks</h5>
+{% if marks %}
+<table class="table table-bordered">
+    <tr>
+        <th>Exam</th>
+        <th>Course</th>
+        <th>Marks</th>
+    </tr>
+    {% for m in marks %}
+    <tr>
+        <td>{{ m.exam.name }}</td>
+        <td>{{ m.exam.course.name }}</td>
+        <td>{{ m.marks }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No marks recorded.</p>
+{% endif %}
+
+{% else %}
+<p>No student linked to this account.</p>
+{% endif %}
+
+{% endblock %}

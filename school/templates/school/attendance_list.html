@@ -1,0 +1,20 @@
+{% extends 'school/base.html' %}
+
+{% block content %}
+<h2>Attendance</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Student</th>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+    {% for attendance in attendance_list %}
+    <tr>
+        <td>{{ attendance.student.user.first_name }} {{ attendance.student.user.last_name }}</td>
+        <td>{{ attendance.date }}</td>
+        <td>{{ attendance.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

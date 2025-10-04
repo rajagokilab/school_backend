@@ -1,0 +1,22 @@
+{% extends 'school/base.html' %}
+
+{% block content %}
+<h2>Courses</h2>
+<a class="btn btn-primary mb-2" href="{% url 'add_course' %}">Add Course</a>
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Teacher</th>
+    </tr>
+    {% for course in courses %}
+    <tr>
+        <td>{{ course.id }}</td>
+        <td>{{ course.name }}</td>
+        <td>{{ course.teacher.user.first_name }} {{ course.teacher.user.last_name }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">No courses found.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
