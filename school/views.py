@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Student, Teacher, Course, Exam, Attendance, Marks
-from .forms import StudentForm, TeacherForm, CourseForm, ExamForm, AttendanceForm, MarksForm
+from .models import Student, Teacher, Course, Exam, Marks, Attendance
+from .forms import StudentForm, TeacherForm, CourseForm, ExamForm, MarksForm, AttendanceForm
 from django.contrib.auth.decorators import login_required
 
-# Home Page
+# Home
 def home(request):
     return render(request, 'school/home.html')
 
-# --- CRUD Views ---
+# Students
 def student_list(request):
     students = Student.objects.all()
     return render(request, 'school/student_list.html', {'students': students})
@@ -22,20 +22,7 @@ def add_student(request):
         form = StudentForm()
     return render(request, 'school/form.html', {'form': form, 'title': 'Add Student'})
 
-def teacher_list(request):
-    teachers = Teacher.objects.all()
-    return render(request, 'school/teacher_list.html', {'teachers': teachers})
-
-def add_teacher(request):
-    if request.method == 'POST':
-        form = TeacherForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('teacher_list')
-    else:
-        form = TeacherForm()
-    return render(request, 'school/form.html', {'form': form, 'title': 'Add Teacher'})
-
+# Courses
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'school/course_list.html', {'courses': courses})
@@ -50,6 +37,7 @@ def add_course(request):
         form = CourseForm()
     return render(request, 'school/form.html', {'form': form, 'title': 'Add Course'})
 
+# Exams
 def exam_list(request):
     exams = Exam.objects.all()
     return render(request, 'school/exam_list.html', {'exams': exams})
@@ -64,9 +52,10 @@ def add_exam(request):
         form = ExamForm()
     return render(request, 'school/form.html', {'form': form, 'title': 'Add Exam'})
 
+# Attendance
 def attendance_list(request):
-    attendance = Attendance.objects.all()
-    return render(request, 'school/attendance_list.html', {'attendance': attendance})
+    attendance_list = Attendance.objects.all()
+    return render(request, 'school/attendance_list.html', {'attendance_list': attendance_list})
 
 def add_attendance(request):
     if request.method == 'POST':
@@ -78,9 +67,10 @@ def add_attendance(request):
         form = AttendanceForm()
     return render(request, 'school/form.html', {'form': form, 'title': 'Add Attendance'})
 
+# Marks
 def marks_list(request):
-    marks = Marks.objects.all()
-    return render(request, 'school/marks_list.html', {'marks': marks})
+    marks_list = Marks.objects.all()
+    return render(request, 'school/marks_list.html', {'marks_list': marks_list})
 
 def add_marks(request):
     if request.method == 'POST':
@@ -92,40 +82,32 @@ def add_marks(request):
         form = MarksForm()
     return render(request, 'school/form.html', {'form': form, 'title': 'Add Marks'})
 
-# --- Parent Dashboard ---
-@login_required
-def parent_dashboard(request):
-    try:
-        student = Student.objects.get(parents_email=request.user.email)
-        attendance = Attendance.objects.filter(student=student)
-        marks = Marks.objects.filter(student=student)
-        return render(request, 'school/parent_dashboard.html', {
-            'student': student,
-            'attendance': attendance,
-            'marks': marks
-        })
-    except Student.DoesNotExist:
-        return render(request, 'school/parent_dashboard.html', {'error': 'No student linked to your account.'})
-def course_list(request):
-    courses = Course.objects.all()
-    return render(request, 'school/course_list.html', {'courses': courses})
-from django.shortcuts import render, redirect
-from .forms import CourseForm
-from .models import Course
+# Parent Dashboard
+# @login_required
+# def parent_dashboard(request):
+#     try:
+#         student = Student.objects.get(parent_user=request.user)
+#         attendance = Attendance.objects.filter(student=student)
+#         marks = Marks.objects.filter(student=student)
+#         return render(request, 'school/parent_dashboard.html', {
+#             'student': student,
+#             'attendance': attendance,
+#             'marks': marks
+#         })
+#     except Student.DoesNotExist:
+#         return render(request, 'school/parent_dashboard.html', {'error': 'No student linked to your account.'})
+# views.py
 
-def add_course(request):
-    if request.method == 'POST':
-        form = CourseForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('course_list')
-    else:
-        form = CourseForm()
-    return render(request, 'school/form.html', {'form': form, 'title': 'Add Course'})
 from django.shortcuts import render, redirect
-from .forms import TeacherForm
 from .models import Teacher
+from .forms import TeacherForm
 
+# List all teachers
+def teacher_list(request):
+    teachers = Teacher.objects.all()
+    return render(request, 'school/teacher_list.html', {'teachers': teachers})
+
+# Add a new teacher
 def add_teacher(request):
     if request.method == 'POST':
         form = TeacherForm(request.POST)
@@ -136,40 +118,23 @@ def add_teacher(request):
         form = TeacherForm()
     return render(request, 'school/form.html', {'form': form, 'title': 'Add Teacher'})
 from django.shortcuts import render
-from .models import Exam
+from django.contrib.auth.decorators import login_required
+from .models import Student, Marks, Attendance
 
-def exam_list(request):
-    exams = Exam.objects.all()
-    return render(request, 'school/exam_list.html', {'exams': exams})
-from django.shortcuts import render
-from .models import Attendance
-
-def attendance_list(request):
-    attendance_list = Attendance.objects.all()
-    return render(request, 'school/attendance_list.html', {'attendance_list': attendance_list})
-from django.shortcuts import render
-from .models import Marks
-
-def marks_list(request):
-    marks_list = Marks.objects.all()
-    return render(request, 'school/marks_list.html', {'marks_list': marks_list})
-# views.py
-from django.shortcuts import render
-from .models import Student, Attendance, Marks
-
+@login_required
 def parent_dashboard(request):
-    # Assuming parent is logged in
-    try:
-        student = Student.objects.get(parent_user=request.user)
-        attendance = Attendance.objects.filter(student=student)
-        marks = Marks.objects.filter(student=student)
-    except Student.DoesNotExist:
-        student = None
-        attendance = []
-        marks = []
+    parent = request.user
+    students = Student.objects.filter(parent_user=parent)
+
+    if not students.exists():
+        return render(request, 'school/parent_dashboard.html', {'message': 'No student linked to your account.'})
+
+    # Get marks and attendance for all children
+    marks = Marks.objects.filter(student__in=students).select_related('exam', 'subject', 'student')
+    attendance = Attendance.objects.filter(student__in=students).select_related('student', 'course')
 
     return render(request, 'school/parent_dashboard.html', {
-        'student': student,
-        'attendance': attendance,
-        'marks': marks
+        'students': students,
+        'marks': marks,
+        'attendance': attendance
     })

@@ -2,20 +2,21 @@
 
 {% block content %}
 <h2>Teachers</h2>
+
 <table class="table table-bordered">
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Subject</th>
+        <th>Employee ID</th>
     </tr>
     {% for teacher in teachers %}
     <tr>
         <td>{{ teacher.id }}</td>
-        <td>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</td>
-        <td>{{ teacher.subject }}</td>
+        <td>{{ teacher.user.get_full_name }}</td>
+        <td>{{ teacher.employee_id }}</td>
     </tr>
-    {% empty %}
-    <tr><td colspan="3">No teachers found.</td></tr>
     {% endfor %}
 </table>
+
+<a href="{% url 'add_teacher' %}" class="btn btn-primary mt-3">Add Teacher</a>
 {% endblock %}

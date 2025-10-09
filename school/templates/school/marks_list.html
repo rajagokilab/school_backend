@@ -6,14 +6,14 @@
 <table class="table table-bordered">
     <tr>
         <th>Student</th>
-        <th>Exam</th>
+        <th>Exam (Course)</th>
         <th>Marks</th>
     </tr>
     {% for mark in marks_list %}
     <tr>
         <td>{{ mark.student.user.first_name }} {{ mark.student.user.last_name }}</td>
-        <td>{{ mark.exam.name }}</td>
-        <td>{{ mark.marks }}</td>
+        <td>{{ mark.exam.course.name }} ({{ mark.exam.date }})</td>
+        <td>{{ mark.marks_obtained }}</td>
     </tr>
     {% endfor %}
 </table>

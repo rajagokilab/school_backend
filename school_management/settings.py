@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-htfy)xw9uc%g5k_b2&=pin3_%xlq&(18j7k6+!c4hd^#6%&hg1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -51,11 +51,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'school_management.urls'
+LOGIN_REDIRECT_URL = '/parent-dashboard/'
+LOGIN_URL = '/parent-login/'
+
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-      'DIRS': [BASE_DIR / 'school/templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # or add your app templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,17 +83,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 # Database configuration (MySQL)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'myshop_db',
-        'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '3306',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'school_management',
+#         'USER': 'root',
+#         'PASSWORD': '123456',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
